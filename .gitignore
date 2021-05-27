@@ -1,2 +1,4 @@
-.vs
-out
+a.out
+grammer.tab.c
+grammer.tab.h
+lex.yy.c
