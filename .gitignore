@@ -1,6 +1,13 @@
+<<<<<<< HEAD
 .vs
 out
 grammer.tab.c
 grammer.tab.h
 a.out
 lex.yy.c
+=======
+a.out
+grammer.tab.c
+grammer.tab.h
+lex.yy.c
+>>>>>>> ad94510f433ae52a945544ae03371270eb0ce3bc

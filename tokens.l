@@ -1,10 +1,15 @@
 %{
+<<<<<<< HEAD
     #include "grammar.tab.h"
     #include <cstring>
+=======
+    #include "grammer.tab.h"
+>>>>>>> ad94510f433ae52a945544ae03371270eb0ce3bc
     #include <iostream>
     using namespace std;
 %}
 
+<<<<<<< HEAD
 
 %option noyywrap
 
@@ -35,3 +40,21 @@ STRONG_ENOUGH_YOU_ARE_NOT               {return AND;}
 {ALPHABET}({ALPHABET}|{DIGITS})*        {strcpy(yylval.name,yytext); return ID;         }          
 
 
+=======
+%option noyywrap
+
+DIGITS          [0-9]
+ALPHABET        [a-zA-Z]
+CHARACTERTOKENS [\+\-\*\/\(\)=]
+
+%%
+
+exit                                        return '\0';
+{CHARACTERTOKENS}                           cerr << "LOOKAHEAD:" << yytext << "\n"; return *yytext;
+[1-9]{DIGITS}*                              yylval=atoi(yytext); cerr << "LOOKAHEAD: NUMBER (" << yylval << ")" << "\n";  return NUMBER;
+\n                                          return '\n';
+{ALPHABET}({ALPHABET}|{DIGITS})*            cerr << "LOOKAHEAD: ID("<< yytext << ")" << "\n"; return ID;
+[ \t]*                                      /*skip*/
+
+%%
+>>>>>>> ad94510f433ae52a945544ae03371270eb0ce3bc
