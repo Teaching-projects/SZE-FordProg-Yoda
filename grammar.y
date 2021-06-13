@@ -17,7 +17,7 @@
 
 %token IF ENDIF ELSE WHILE ENDWHILE RETURN PRINTF EQUALTO GREATERTHAN OR AND
 %token<value> NUMBER
-%token<name> ID
+%token<name> ID STRING
 
 %type<value> term multiplication expression 
 
@@ -27,16 +27,39 @@ commands    :   commands command
             |   /*empty*/
             ;
 
-command:    expression 
-            | '(' expression ')' IF '{' command '}' ENDIF
-            | '(' expression ')' IF '{' command '}' ELSE '{' command '}' ENDIF
-            | '(' expression ')' WHILE '{' command '}' ENDWHILE
-            | PRINTF {printf("")}
-            | RETURN expression ';'
+command:    lgc 
+            | '(' lgc ')' IF '{' command '}' ENDIF
+            | '(' lgc ')' IF '{' command '}' ELSE '{' command '}' ENDIF
+            | '(' lgc ')' WHILE '{' command '}' ENDWHILE
+            | '(' lgc ')' WHILE '{' /*empty loop*/ '}' ENDWHILE
+            | PRINTF STRING {printf("%s"), $2};
+            | RETURN ID ';'
+            | RETURN NUMBER ';'
+            | expression 
             ;   
 
-condition: ;
+lgc: ID EQUALTO NUMBER       {$1 == $3}
+            | NUMBER EQUALTO ID     {$1 == $3}
+            | ID GREATERTHAN NUMBER {$1 > $3}
+            | NUMBER GREATERTHAN ID {$1 > $3}
+            | ID OR NUMBER          {$1 || $3}
+            | NUMBER OR ID          {$1 || $3}
+            | ID AND NUMBER         {$1 && $3}
+            | NUMBER AND ID         {$1 && $3}
 
+;
+
+expression: expression '+' multiplication { $$= $1 + $3; }
+            | expression '-' multiplication { $$= $1 - $3; }
+            | multiplication { $$= $1; }
+            ;
+
+multiplication: multiplication '*' term { $$= $1 * $3; }
+               | multiplication '/' term { $$= $1 / $3; }
+               | term { $$ = $1; }
+               ;
+ 
+;
 %%
 
 
