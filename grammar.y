@@ -27,18 +27,23 @@ commands    :   commands command
             |   /*empty*/
             ;
 
-command:    lgc 
-            | '(' lgc ')' IF command  ENDIF // No idea how to depend on lgc to execute command, do i even have to check it?
-            | '(' lgc ')' IF  command  ELSE  command  ENDIF
-            | '(' lgc ')' WHILE  command ENDWHILE // No idea how to create a loop yet
-            | '(' lgc ')' WHILE  /*empty loop*/  ENDWHILE
+command:    boolexp 
+            |  '(' boolexp ')' while
+            | '(' boolexp ')' if
             | PRINTF STRING {printf("%s"), $2};
             | RETURN ID ';'
             | RETURN NUMBER ';'
             | expression 
             ;   
 
-lgc: ID EQUALTO NUMBER       {$1 == $3} // Probably here need something more...
+while: WHILE  command ENDWHILE 
+;
+
+if:         IF command  ENDIF 
+            | IF  command  ELSE  command  ENDIF
+;
+
+boolexp: ID EQUALTO NUMBER       {$1 == $3} // Probably here need something more...
             | NUMBER EQUALTO ID     {$1 == $3}
             | ID GREATERTHAN NUMBER {$1 > $3}
             | NUMBER GREATERTHAN ID {$1 > $3}
@@ -61,7 +66,9 @@ multiplication: multiplication '*' term { $$= $1 * $3; }
  
 ;
 
-term ;
+term: '(' expression ')' { $$ = $2; }
+     | NUMBER { $$ = $1; }
+     ;
 %%
 
 

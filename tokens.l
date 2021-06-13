@@ -33,4 +33,6 @@ WHAT_WE_KNOW_NOT                        {return OR;}
 STRONG_ENOUGH_YOU_ARE_NOT               {return AND;}
 {DIGITS}                                {yylval.value = atoi(yytext); return NUMBER;    }
 {ALPHABET}({ALPHABET}|{DIGITS})*        {strcpy(yylval.name,yytext); return ID;}
-{ALPHABET}                              {return yytext;}          
+{ALPHABET}                              {return yytext;}
+[ \t] { /* ignore whitespace */ }
+          

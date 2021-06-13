@@ -1,3 +1,4 @@
+/////////////// Didnt user everything, just some example for myself
 False					-> NOT_YET
 True 					-> SUPRISED
 
@@ -41,17 +42,42 @@ Examples:
 ///////////////
 IF:
 ///////////////
-(x < 5) while x = x + 1 else x = x - 1 endif
+(5 > x) while x = x + 1 else x = x - 1 endif
 
-(x POWERFUL_YOU_HAVE_BECOME 5) STRAIGHT_PATH_WE_WILL_NOT_FOLLOW  x WARS_NOT_MAKE_ONE_GREATE x SIZE_MATTERS_NOT 1 THE_GREATEST_TEACHER_FAILURE_IS x WARS_NOT_MAKE_ONE_GREATE x RUSH_NOT_INTO_FIGHTS 1 DO_OR_DO_NOT
+(5 POWERFUL_YOU_HAVE_BECOME x) STRAIGHT_PATH_WE_WILL_NOT_FOLLOW  x WARS_NOT_MAKE_ONE_GREATE x SIZE_MATTERS_NOT 1 THE_GREATEST_TEACHER_FAILURE_IS x WARS_NOT_MAKE_ONE_GREATE x RUSH_NOT_INTO_FIGHTS 1 DO_OR_DO_NOT
 
 ///////////////
 WHILE
 ///////////////
 
-(x < 5) while x = x + 1 endwhile
+(5 > x) while x = x + 1 endwhile
 
-(x POWERFUL_YOU_HAVE_BECOME 5) HURRY_WE_MUST  x WARS_NOT_MAKE_ONE_GREATE x SIZE_MATTERS_NOT 1 ATTACHMENT_LEADS_TO_JEALOUSY
+(5 POWERFUL_YOU_HAVE_BECOME x) HURRY_WE_MUST  x WARS_NOT_MAKE_ONE_GREATE x SIZE_MATTERS_NOT 1 ATTACHMENT_LEADS_TO_JEALOUSY
  
+///////////////
+PRINTF
+///////////////
+
+MY_ALLY_IS_THE_FORCE string
+
+///// USEFUL THINGS
+// AST make
+
+This program now has three source files and a header file, so of course we use make to
+build it.
+fb3-1: fb3-1.l fb3-1.y fb3-1.h
+ bison -d fb3-1.y
+ flex -ofb3-1.lex.c fb3-1.l
+ cc -o $@ fb3-1.tab.c fb3-1.lex.c fb3-1funcs.c
+Notice the -o flag to flex. Bison automatically names its generated C file to match
+the .y file, but flex always calls its C file lex.yy.c unless you tell it otherwise.
+
+WHILE IS SOLVEABLE creating AST solver c file (probably)
+
+cheat: https://web.iitd.ac.in/~sumeet/flex__bison.pdf
+
+
+
+
 
 
