@@ -31,8 +31,9 @@ PERHAPS_NOTHING_IT_IS                   {return EQUALTO;}
 POWERFUL_YOU_HAVE_BECOME                {return GREATERTHAN;}
 WHAT_WE_KNOW_NOT                        {return OR;}
 STRONG_ENOUGH_YOU_ARE_NOT               {return AND;}
+SUPRISED                                {yylval.value = 1; return BOOL;}
+NOT_YET                                 {yylval.value = 0; return BOOL;}
 {DIGITS}                                {yylval.value = atoi(yytext); return NUMBER;    }
 {ALPHABET}({ALPHABET}|{DIGITS})*        {strcpy(yylval.name,yytext); return ID;}
-{ALPHABET}                              {return yytext;}
-[ \t] { /* ignore whitespace */ }
+[ \t]                                   { /* ignore whitespace */ }
           

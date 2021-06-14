@@ -49,47 +49,37 @@ extern int yydebug;
 # define YYTOKENTYPE
   enum yytokentype
   {
-    int_const = 258,
-    char_const = 259,
-    float_const = 260,
-    id = 261,
-    string = 262,
-    enumeration_const = 263,
-    storage_const = 264,
-    type_const = 265,
-    qual_const = 266,
-    struct_const = 267,
-    enum_const = 268,
-    DEFINE = 269,
-    IF = 270,
-    FOR = 271,
-    DO = 272,
-    WHILE = 273,
-    BREAK = 274,
-    SWITCH = 275,
-    CONTINUE = 276,
-    RETURN = 277,
-    CASE = 278,
-    DEFAULT = 279,
-    GOTO = 280,
-    SIZEOF = 281,
-    PUNC = 282,
-    or_const = 283,
-    and_const = 284,
-    eq_const = 285,
-    shift_const = 286,
-    rel_const = 287,
-    inc_const = 288,
-    point_const = 289,
-    param_const = 290,
-    ELSE = 291,
-    HEADER = 292
+    IF = 258,
+    ENDIF = 259,
+    ELSE = 260,
+    WHILE = 261,
+    ENDWHILE = 262,
+    RETURN = 263,
+    PRINTF = 264,
+    OR = 265,
+    AND = 266,
+    EQUALTO = 267,
+    GREATERTHAN = 268,
+    NUMBER = 269,
+    BOOL = 270,
+    ID = 271,
+    STRING = 272
   };
 #endif
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-typedef int YYSTYPE;
+union YYSTYPE
+{
+#line 13 "grammar.y"
+
+    int value;
+    char name[16];
+
+#line 80 "grammar.tab.h"
+
+};
+typedef union YYSTYPE YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
 #endif
