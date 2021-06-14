@@ -60,26 +60,16 @@ extern int yydebug;
     AND = 266,
     EQUALTO = 267,
     GREATERTHAN = 268,
-    NUMBER = 269,
-    BOOL = 270,
-    ID = 271,
-    STRING = 272
+    ID = 269,
+    STRING = 270,
+    NUMBER = 271,
+    BOOL = 272
   };
 #endif
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-union YYSTYPE
-{
-#line 13 "grammar.y"
-
-    int value;
-    char name[16];
-
-#line 80 "grammar.tab.h"
-
-};
-typedef union YYSTYPE YYSTYPE;
+typedef int YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
 #endif

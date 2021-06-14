@@ -1,25 +1,28 @@
 %{
-    #include <iostream>
-    #include <map>
-    #include <string>
-    using namespace std;
+    #include <stdio.h>
     int yylex();
     int yyerror(char* message){
         return 1;
     }
-    map<string,int> identifiers;
+
 %}
 
-%union{
-    int value;
-    char name[16];
-}
 
-%token IF ENDIF ELSE WHILE ENDWHILE RETURN PRINTF OR AND EQUALTO GREATERTHAN
-%token<value> NUMBER BOOL
-%token<name> ID STRING
-
-%type<value> term multiplication expression 
+%token IF 
+%token ENDIF 
+%token ELSE 
+%token WHILE 
+%token ENDWHILE 
+%token RETURN 
+%token PRINTF 
+%token OR 
+%token AND 
+%token EQUALTO 
+%token GREATERTHAN 
+%token ID 
+%token STRING 
+%token NUMBER 
+%token BOOL
 
 %%
 
@@ -27,49 +30,49 @@ commands    :   commands command
             |   /*empty*/
             ;
 
-command:    boolexp 
-            |  '(' boolexp ')' WHILE  command ENDWHILE 
-            | '(' boolexp ')' if
-            | PRINTF STRING {printf("%s"); $2;};
-            | RETURN ID ';'
-            | RETURN NUMBER ';'
-            | expression 
+command:    boolexp {printf("Boolexp\n");}
+             |  '(' boolexp ')' WHILE  command ENDWHILE { printf("While\n"); }
+            | '(' boolexp ')' if    {printf("if\n");}
+            | PRINTF STRING { printf("Printf string\n"); } 
+            | RETURN ID ';' {printf("Return id\n");}
+            | RETURN NUMBER ';'{printf("retunr number\n");}
+            | {printf("Empty\n");}
             ;   
 
-if:         IF command  ENDIF 
-            | IF  command  ELSE  command  ENDIF
+if:         IF command  ENDIF {printf("If command endf\n");}
+            | IF  command  ELSE  command  ENDIF {printf("if command else command endif \n");}
 ;
 
-boolexp: ID EQUALTO NUMBER          //{$1 == $3;} 
-            | NUMBER EQUALTO ID     //{$1 == $3;}
-            | ID GREATERTHAN NUMBER //{$1 > $3;}
-            | NUMBER GREATERTHAN ID //{$1 > $3;}
-            | ID OR NUMBER          //{$1 || $3;}
-            | NUMBER OR ID          //{$1 || $3;}
-            | ID AND NUMBER         //{$1 && $3;}
-            | NUMBER AND ID         //{$1 && $3;}
+boolexp: ID EQUALTO NUMBER          {printf("ID EQUALTO NUMBER\n");} 
+            | NUMBER EQUALTO ID     {printf("NUMBER EQUALTO ID\n");}
+            | ID EQUALTO ID         {printf("ID EQUALTO ID\n");}
+            | NUMBER EQUALTO NUMBER {printf("NUMBER EQUALTO NUMBER\n");}
+            | ID GREATERTHAN NUMBER {printf("ID GREATERTHAN NUMBER\n");}
+            | NUMBER GREATERTHAN ID {printf("NUMBER GREATERTHAN ID\n");}
+            | ID OR NUMBER          {printf("ID OR NUMBER\n");}
+            | NUMBER OR ID          {printf("NUMBER OR ID\n");}
+            | ID AND NUMBER         {printf("ID AND NUMBER\n");}
+            | NUMBER AND ID         {printf("NUMBER AND ID\n");}
+            |
 ;
 
-expression: expression '+' multiplication { $$= $1 + $3; }
-            | expression '-' multiplication { $$= $1 - $3; }
-            | multiplication { $$= $1; }
-            ;
+/* expression: expression '+' multiplication 
+            | expression '-' multiplication 
+            | multiplication 
+            ; */
 
-multiplication: multiplication '*' term { $$= $1 * $3; }
-               | multiplication '/' term { $$= $1 / $3; }
-               | term { $$ = $1; }
-               ;
+/* multiplication: multiplication '*' term 
+               | multiplication '/' term 
+               | term 
+               ; */
  
 ;
 
-term: '(' expression ')' { $$ = $2; }
-     | NUMBER { $$ = $1; }
-     ;
 %%
 
 int main(){
     int result  = yyparse();
-    if (result == 0) cout<<"<ACC>\n";
-    else cout<<"DISOBEYING THE COUNCIL YOUR EXPERTISE IS (ERROR: " << result << ")" <<endl;
+    if (result == 0) printf("<ACC>\n");
+    else printf("DISOBEYING THE COUNCIL YOUR EXPERTISE IS (ERROR: %d)\n", result);
     return 0;
 }
