@@ -2,6 +2,7 @@
     #include <stdio.h>
     int yylex();
     int yyerror(char* message){
+        printf("%s\n", message);
         return 1;
     }
 
@@ -23,50 +24,66 @@
 %token STRING 
 %token NUMBER 
 %token BOOL
+%token MAIN ENDMAIN METHOD NONVOIDMETHOD ARGS ENDMETHOD CALLMETHOD TYPE
 
 %%
 
-commands    :   commands command
-            |   /*empty*/
+// Method handling
+main: args '\n' MAIN '\n' commands '\n' ENDMAIN {printf("Main function call\n");};
+    | /*empty*/
+
+function: args '\n' METHOD '\n' commands '\n' ENDMETHOD
+        | TYPE '\n' args '\n' NONVOIDMETHOD '\n' commands '\n' ENDMETHOD
+        | /*empty*/
+        | ;
+
+args: ARGS 
+// Method handling end
+
+// Common command handling
+commands    : command commands
             ;
 
-command:    boolexp {printf("Boolexp\n");}
-             |  '(' boolexp ')' WHILE  command ENDWHILE { printf("While\n"); }
-            | '(' boolexp ')' if    {printf("if\n");}
+command:     
+             boolexp '\n'  WHILE '\n' command '\n' ENDWHILE { printf("While\n"); }
+            | boolexp '\n' if  {printf("if\n");}
             | PRINTF STRING { printf("Printf string\n"); } 
-            | RETURN ID ';' {printf("Return id\n");}
-            | RETURN NUMBER ';'{printf("retunr number\n");}
-            | {printf("Empty\n");}
+            | RETURN ID {printf("Return id\n");}
+            | RETURN NUMBER {printf("return number\n");}
+            | exprs
+            | {printf("Empty\n");} 
             ;   
 
-if:         IF command  ENDIF {printf("If command endf\n");}
-            | IF  command  ELSE  command  ENDIF {printf("if command else command endif \n");}
+if:         IF '\n' command '\n' ENDIF {printf("If command endf\n");}
+            | IF '\n' command '\n' ELSE '\n' command '\n' ENDIF {printf("if command else command endif \n");}
 ;
 
-boolexp: ID EQUALTO NUMBER          {printf("ID EQUALTO NUMBER\n");} 
-            | NUMBER EQUALTO ID     {printf("NUMBER EQUALTO ID\n");}
-            | ID EQUALTO ID         {printf("ID EQUALTO ID\n");}
-            | NUMBER EQUALTO NUMBER {printf("NUMBER EQUALTO NUMBER\n");}
-            | ID GREATERTHAN NUMBER {printf("ID GREATERTHAN NUMBER\n");}
-            | NUMBER GREATERTHAN ID {printf("NUMBER GREATERTHAN ID\n");}
-            | ID OR NUMBER          {printf("ID OR NUMBER\n");}
-            | NUMBER OR ID          {printf("NUMBER OR ID\n");}
-            | ID AND NUMBER         {printf("ID AND NUMBER\n");}
-            | NUMBER AND ID         {printf("NUMBER AND ID\n");}
-            |
+// Boolean expression handling start
+boolexp:      exprs blx exprs {printf(" boolexp \n");}
 ;
 
-/* expression: expression '+' multiplication 
-            | expression '-' multiplication 
-            | multiplication 
-            ; */
+exprs:    ID {printf("id\n");}
+        | NUMBER {printf("number\n");}
+        | BOOL {printf("bool\n");}
+        ;
 
-/* multiplication: multiplication '*' term 
-               | multiplication '/' term 
-               | term 
-               ; */
- 
-;
+blx: EQUALTO {printf("equalto\n");}
+    | GREATERTHAN {printf("greaterthan\n");}
+    | OR {printf("or\n");}
+    | AND {printf("and\n");}
+
+// Boolean expression handling finish
+
+// Calculation grammar.
+calc: exprs token calc
+    | exprs
+    ;
+
+token: '+'
+        | '-'
+        | '*'
+        | '/'
+        ;
 
 %%
 
