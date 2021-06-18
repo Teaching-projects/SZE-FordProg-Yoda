@@ -74,8 +74,8 @@ the .y file, but flex always calls its C file lex.yy.c unless you tell it otherw
 
 WHILE IS SOLVEABLE creating AST solver c file (probably)
 
-cheat: https://web.iitd.ac.in/~sumeet/flex__bison.pdf
-
+Book: https://web.iitd.ac.in/~sumeet/flex__bison.pdf
+example: https://github.com/andreiluca96/C-like-Programming-Language-Compiler---FLEX-BISON/blob/master/compilator.y
 
 
 
