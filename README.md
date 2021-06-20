@@ -75,37 +75,66 @@ exit
 ### Parsed TEST string 
 
 include string
+
 MAIN
+
 ID GREATERTHAN 321 IF
+
 ID = 5 + 7
+
 ELSE
+
 WHILE 43 GREATERTHAN ID
+
 ID = 5 + 7
+
 ENDWHILE
+
 ENDIF
+
 ID = 5 + 7
+
 RETURN ID
+
 ENDMAIN
 
 VOIDMETHOD methodname(float a, int b)
+
 ID GREATERTHAN 321 IF
+
 ID = 5 + 7
+
 ELSE
+
 WHILE 43 GREATERTHAN ID
+
 ID = 5 + 7
+
 ENDWHILE
+
 ENDIF
+
 ID = 5 + 7
+
 RETURN ID
 
 FLOAT methodname(float a, int b)
+
 ID GREATERTHAN 321 IF
+
 ID = 5 + 7
+
 ELSE
+
 WHILE 43 GREATERTHAN ID
+
 ID = 5 + 7
+
 ENDWHILE
+
 ENDIF
+
 ID = 5 + 7
+
 RETURN ID
 
