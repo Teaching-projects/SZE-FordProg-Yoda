@@ -1,4 +1,7 @@
-/////////////// Didnt user everything, just some example for myself
+# YODAC
+
+## Commands
+
 False					-> NOT_YET
 True 					-> SUPRISED
 
@@ -37,54 +40,54 @@ AssignVariable			-> TOO_MUCH_WEIGHT_SLOW_YOU_DOWN_IT_WILL
 SetValue				-> WARS_NOT_MAKE_ONE_GREATE.
 ParseError				-> DISOBEYING_THE_COUNCIL_YOUR_EXPERTISE_IS
 
-Examples:
+## Example 
 
-///////////////
-IF:
-///////////////
-(5 > x) while x = x + 1 else x = x - 1 endif
+### TEST string
 
-(5 POWERFUL_YOU_HAVE_BECOME x) STRAIGHT_PATH_WE_WILL_NOT_FOLLOW  x WARS_NOT_MAKE_ONE_GREATE x SIZE_MATTERS_NOT 1 THE_GREATEST_TEACHER_FAILURE_IS x WARS_NOT_MAKE_ONE_GREATE x RUSH_NOT_INTO_FIGHTS 1 DO_OR_DO_NOT
-
-///////////////
-WHILE
-///////////////
-
-(5 > x) while x = x + 1 endwhile
-
-(5 POWERFUL_YOU_HAVE_BECOME x) HURRY_WE_MUST  x WARS_NOT_MAKE_ONE_GREATE x SIZE_MATTERS_NOT 1 ATTACHMENT_LEADS_TO_JEALOUSY
- 
-///////////////
-PRINTF
-///////////////
-
-MY_ALLY_IS_THE_FORCE string
-
-///////////////
-TEST string
-///////////////
 include dijn210
 A_JOURNEY_I_MUST_MAKE
 id POWERFUL_YOU_HAVE_BECOME 321 STRAIGHT_PATH_WE_WILL_NOT_FOLLOW
-id WARS_NOT_MAKE_ONE_GREATE 5 SIZE_MATTERS_NOT 7
+FLOAT id WARS_NOT_MAKE_ONE_GREATE 5 SIZE_MATTERS_NOT 7
 THE_GREATEST_TEACHER_FAILURE_IS
 43 POWERFUL_YOU_HAVE_BECOME id HURRY_WE_MUST
-id WARS_NOT_MAKE_ONE_GREATE 5 SIZE_MATTERS_NOT 7
+FLOAT id WARS_NOT_MAKE_ONE_GREATE 5 SIZE_MATTERS_NOT 7
 ATTACHMENT_LEADS_TO_JEALOUSY
 DO_OR_DO_NOT
-id WARS_NOT_MAKE_ONE_GREATE 5 SIZE_MATTERS_NOT 7
+FLOAT id WARS_NOT_MAKE_ONE_GREATE 5 SIZE_MATTERS_NOT 7
 PASS_ON_WHAT_YOU_HAVE_LEARNED id
 GO_I_WILL
+FLOAT a, INT b IF_SO_POWERFUL_YOU_ARE_WHY_LEAVE methodname
+id POWERFUL_YOU_HAVE_BECOME 321 STRAIGHT_PATH_WE_WILL_NOT_FOLLOW
+FLOAT id WARS_NOT_MAKE_ONE_GREATE 5 SIZE_MATTERS_NOT 7
+THE_GREATEST_TEACHER_FAILURE_IS
+43 POWERFUL_YOU_HAVE_BECOME id HURRY_WE_MUST
+FLOAT id WARS_NOT_MAKE_ONE_GREATE 5 SIZE_MATTERS_NOT 7
+ATTACHMENT_LEADS_TO_JEALOUSY
+DO_OR_DO_NOT
+FLOAT id WARS_NOT_MAKE_ONE_GREATE 5 SIZE_MATTERS_NOT 7
+PASS_ON_WHAT_YOU_HAVE_LEARNED id
+NO_MORE_TRAINING_YOU_REQUIRE
+FLOAT FLOAT a, INT b BEGUN_THE_CLONE_WAR_HAS methodname
+id POWERFUL_YOU_HAVE_BECOME 321 STRAIGHT_PATH_WE_WILL_NOT_FOLLOW
+FLOAT id WARS_NOT_MAKE_ONE_GREATE 5 SIZE_MATTERS_NOT 7
+THE_GREATEST_TEACHER_FAILURE_IS
+43 POWERFUL_YOU_HAVE_BECOME id HURRY_WE_MUST
+FLOAT id WARS_NOT_MAKE_ONE_GREATE 5 SIZE_MATTERS_NOT 7
+ATTACHMENT_LEADS_TO_JEALOUSY
+DO_OR_DO_NOT
+FLOAT id WARS_NOT_MAKE_ONE_GREATE 5 SIZE_MATTERS_NOT 7
+PASS_ON_WHAT_YOU_HAVE_LEARNED id
+NO_MORE_TRAINING_YOU_REQUIRE
+exit
 
-///////
+### Parsed TEST string 
+
 include string
 MAIN
-ID GREATERTHAN 321
-IF
+ID GREATERTHAN 321 IF
     ID = 5 + 7
 ELSE
-    43 GREATERTHAN ID
-    WHILE
+    WHILE 43 GREATERTHAN ID
         ID = 5 + 7
     ENDWHILE
 ENDIF
@@ -92,22 +95,25 @@ ID = 5 + 7
 RETURN ID
 ENDMAIN
 
-///// USEFUL THINGS
-// AST make
+VOIDMETHOD methodname(float a, int b)
+ID GREATERTHAN 321 IF
+    ID = 5 + 7
+ELSE
+    WHILE 43 GREATERTHAN ID
+        ID = 5 + 7
+    ENDWHILE
+ENDIF
+ID = 5 + 7
+RETURN ID
 
-This program now has three source files and a header file, so of course we use make to
-build it.
-fb3-1: fb3-1.l fb3-1.y fb3-1.h
- bison -d fb3-1.y
- flex -ofb3-1.lex.c fb3-1.l
- cc -o $@ fb3-1.tab.c fb3-1.lex.c fb3-1funcs.c
-Notice the -o flag to flex. Bison automatically names its generated C file to match
-the .y file, but flex always calls its C file lex.yy.c unless you tell it otherwise.
-
-Book: https://web.iitd.ac.in/~sumeet/flex__bison.pdf
-example: https://github.com/andreiluca96/C-like-Programming-Language-Compiler---FLEX-BISON/blob/master/compilator.y
-
-
-
-
+FLOAT methodname(float a, int b)
+ID GREATERTHAN 321 IF
+    ID = 5 + 7
+ELSE
+    WHILE 43 GREATERTHAN ID
+        ID = 5 + 7
+    ENDWHILE
+ENDIF
+ID = 5 + 7
+RETURN ID
 

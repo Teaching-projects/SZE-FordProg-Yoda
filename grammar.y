@@ -41,8 +41,8 @@ s: include s
     ;
 
 // Include handling
-include: INCLUDE STRING     // {printf("include\n");}
-        | INCLUDE ID        // {printf("include\n"); /*for testing*/}
+include: INCLUDE STRING      {printf("include\n");}
+        | INCLUDE ID         {printf("include\n"); /*for testing*/}
         ; 
 
 
@@ -56,8 +56,8 @@ function: args METHOD STRING commands ENDMETHOD                 { printf("void m
         ;
 
 // function argumentum handler
-args: TYPE STRING',' args   {printf("type string, \n");}
-    | TYPE STRING           {printf("type string \n");}
+args: TYPE STRING',' args    { printf("type string, \n");}
+    | TYPE STRING            { printf("type string \n");}
     | /*can be empty*/         
     ;
 // Method handling end
@@ -71,8 +71,7 @@ command:
              boolexp WHILE  command ENDWHILE        { printf("While\n"); }
             | boolexp if                            { printf("if\n"); }
             | PRINTF STRING                         { printf("Printf string\n");} 
-            | RETURN ID                             { printf("Return id\n"); }
-            | RETURN NUMBER                         { printf("return number\n"); }
+            | RETURN exprs                          { printf("Return id\n"); }
             | calc                                  { printf("calc\n");}
             |                                       { printf("Empty\n");} 
             ;   
@@ -104,10 +103,13 @@ calc_exprs:  ID
             | STRING
 ;
 
-calc: calc_exprs '=' exprs              {printf("var def\n");}
-    | calc_exprs '=' exprs token exprs  {printf("calculation\n");}
-    | calc_exprs                        {printf("var def\n");} 
+calc: TYPE calc_exprs '=' exprs calc_repeater   //{printf("calculation\n");}
+    | TYPE calc_exprs                           //{printf("var def\n");} 
     ;
+
+calc_repeater:  token exprs calc_repeater
+                |
+                ;
 
 token: '+'
         | '-'

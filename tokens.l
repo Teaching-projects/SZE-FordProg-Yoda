@@ -10,7 +10,7 @@
 
 DIGITS  [0-9]
 ALPHABET [a-zA-Z][a-zA-Z0-9]*
-CHARACTERTOKENS [(\)]
+CHARACTERTOKENS [(,)(\)]
 
 %% 
 
