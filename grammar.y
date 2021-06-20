@@ -8,6 +8,10 @@
 
 %}
 
+%union {
+char strval[2048];
+int intval;
+}
 
 %token IF 
 %token ENDIF 
@@ -24,7 +28,8 @@
 %token STRING 
 %token NUMBER 
 %token BOOL
-%token MAIN ENDMAIN METHOD NONVOIDMETHOD ARGS ENDMETHOD CALLMETHOD TYPE INCLUDE
+%token MAIN ENDMAIN METHOD NONVOIDMETHOD ARGS ENDMETHOD CALLMETHOD  INCLUDE
+%token <strval>TYPE <strval>NUMBER
 
 %%
 
