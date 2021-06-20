@@ -61,10 +61,37 @@ PRINTF
 MY_ALLY_IS_THE_FORCE string
 
 ///////////////
-MAIN
+TEST string
 ///////////////
+include dijn210
+A_JOURNEY_I_MUST_MAKE
+id POWERFUL_YOU_HAVE_BECOME 321 STRAIGHT_PATH_WE_WILL_NOT_FOLLOW
+id WARS_NOT_MAKE_ONE_GREATE 5 SIZE_MATTERS_NOT 7
+THE_GREATEST_TEACHER_FAILURE_IS
+43 POWERFUL_YOU_HAVE_BECOME id
+HURRY_WE_MUST
+id WARS_NOT_MAKE_ONE_GREATE 5 SIZE_MATTERS_NOT 7
+ATTACHMENT_LEADS_TO_JEALOUSY
+DO_OR_DO_NOT
+id WARS_NOT_MAKE_ONE_GREATE 5 SIZE_MATTERS_NOT 7
+PASS_ON_WHAT_YOU_HAVE_LEARNED id
+GO_I_WILL
 
-
+///////
+include string
+MAIN
+ID GREATERTHAN 321
+IF
+    ID = 5 + 7
+ELSE
+    43 GREATERTHAN ID
+    WHILE
+        ID = 5 + 7
+    ENDWHILE
+ENDIF
+ID = 5 + 7
+RETURN ID
+ENDMAIN
 
 ///// USEFUL THINGS
 // AST make
@@ -77,8 +104,6 @@ fb3-1: fb3-1.l fb3-1.y fb3-1.h
  cc -o $@ fb3-1.tab.c fb3-1.lex.c fb3-1funcs.c
 Notice the -o flag to flex. Bison automatically names its generated C file to match
 the .y file, but flex always calls its C file lex.yy.c unless you tell it otherwise.
-
-WHILE IS SOLVEABLE creating AST solver c file (probably)
 
 Book: https://web.iitd.ac.in/~sumeet/flex__bison.pdf
 example: https://github.com/andreiluca96/C-like-Programming-Language-Compiler---FLEX-BISON/blob/master/compilator.y

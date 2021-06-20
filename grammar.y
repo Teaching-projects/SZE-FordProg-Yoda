@@ -28,36 +28,35 @@ int intval;
 %token STRING 
 %token BOOL
 %token MAIN ENDMAIN METHOD NONVOIDMETHOD ARGS ENDMETHOD CALLMETHOD  INCLUDE
-//%right IF ELSE ?? 
-
-%token TYPE <strval>NUMBER
+%token TYPE NUMBER
 
 %%
 
 // main token handler
-s:  main 
-    //| function 
-    //| exprs 
-    | include s
+s: include s 
+    | function s
+    | exprs s
+    | main s
     | /*empty */
     ;
 
 // Include handling
-include: INCLUDE STRING '\n' {printf("include\n");}
-        | INCLUDE ID '\n' {printf("include\n"); /*for testing*/}
+include: INCLUDE STRING '\n'// {printf("include\n");}
+        | INCLUDE ID '\n'// {printf("include\n"); /*for testing*/}
         ; 
 
+
 // Method handling
-main: //args '\n' MAIN '\n' commands '\n' ENDMAIN '\n' 
-    //{
-      //  printf("Main function call\n");
+main: args '\n' MAIN '\n' commands '\n' ENDMAIN '\n' 
+    {
+        printf("Main function call\n");
         /*  Something like this
             void main(args){
                 commands
             }
         */
-    //}
-    /*|*/ MAIN '\n' commands '\n' ENDMAIN '\n' 
+    }
+    | MAIN '\n' commands '\n' ENDMAIN '\n' 
     {
         printf("Main function call\n");
         /*  Something like this
@@ -71,7 +70,6 @@ main: //args '\n' MAIN '\n' commands '\n' ENDMAIN '\n'
         printf("Main function call\n");
         /*  Something like this
             void main(){
-                commands
             }
         */
     }
@@ -98,8 +96,8 @@ function: args '\n' METHOD STRING '\n' commands '\n' ENDMETHOD '\n'
         ;
 
 // function argumentum handler
-args: TYPE STRING',' args '\n'   {printf("type string, \n");}
-    | TYPE STRING '\n'          {printf("type string \n");}
+args: TYPE STRING',' args   {printf("type string, \n");}
+    | TYPE STRING           {printf("type string \n");}
     | /*can be empty*/         
     ;
 // Method handling end
@@ -110,7 +108,7 @@ commands    : command commands
             ;
 
 command:     
-             boolexp '\n'  WHILE '\n' command '\n' ENDWHILE '\n' { 
+             boolexp WHILE '\n' command '\n' ENDWHILE '\n' { 
                     printf("While\n"); 
                     /*
                     How to check boolexp?
@@ -119,7 +117,7 @@ command:
                         }
                     */
                  }
-            | boolexp '\n' if  {
+            | boolexp if  {
                 printf("if\n");
                 /*
                     How to check boolexp?
@@ -137,28 +135,28 @@ command:
             } 
             | RETURN ID '\n' {printf("Return id\n"); /*How to return a value here?*/}
             | RETURN NUMBER '\n' {printf("return number\n"); /*How to return?*/}
-            | exprs 
+            | calc '\n' 
             | {printf("Empty\n");} 
             ;   
 
-if:         IF '\n' command '\n' ENDIF '\n' {printf("If command endf\n");}
-            | IF '\n' command '\n' ELSE '\n' command '\n' ENDIF '\n' {printf("if command else command endif \n");}
+if:         IF '\n' commands '\n' ENDIF '\n' {printf("If command endf\n");}
+            | IF '\n' commands '\n' ELSE '\n' commands '\n' ENDIF '\n' {printf("if command else command endif \n");}
 ;
 
 // Boolean expression handling start
-boolexp:      exprs blx exprs {printf(" boolexp \n"); }
+boolexp:      exprs blx exprs {printf("boolexp \n"); }
 ;
 
 exprs:    ID {printf("id\n");}
         | NUMBER {printf("number\n");}
         | BOOL {printf("bool\n");}
-        | STRING {printf("it is id as well"); /*for testing*/}
+        | STRING {printf("id string\n"); /*for testing*/}
         ;
 
-blx: EQUALTO '\n' {printf("equalto\n");}
-    | GREATERTHAN '\n' {printf("greaterthan\n");}
-    | OR '\n' {printf("or\n");}
-    | AND '\n' {printf("and\n");}
+blx: EQUALTO {printf("equalto\n");}
+    | GREATERTHAN {printf("greaterthan\n");}
+    | OR {printf("or\n");}
+    | AND {printf("and\n");}
 
 // Boolean expression handling finish
 
@@ -168,8 +166,9 @@ calc_exprs:  ID
             | STRING
 ;
 
-calc: exprs token calc '\n' {printf("calculation"); /*No idea how to solve this yet*/}
-    | exprs '\n'
+calc: calc_exprs '=' exprs {printf("var def\n");}
+    | calc_exprs '=' exprs token exprs'\n' {printf("calculation\n"); }
+    | calc_exprs {printf("var def\n");} '\n'
     ;
 
 token: '+'
