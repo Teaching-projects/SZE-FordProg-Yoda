@@ -41,58 +41,18 @@ s: include s
     ;
 
 // Include handling
-include: INCLUDE STRING '\n'// {printf("include\n");}
-        | INCLUDE ID '\n'// {printf("include\n"); /*for testing*/}
+include: INCLUDE STRING     // {printf("include\n");}
+        | INCLUDE ID        // {printf("include\n"); /*for testing*/}
         ; 
 
 
 // Method handling
-main: args '\n' MAIN '\n' commands '\n' ENDMAIN '\n' 
-    {
-        printf("Main function call\n");
-        /*  Something like this
-            void main(args){
-                commands
-            }
-        */
-    }
-    | MAIN '\n' commands '\n' ENDMAIN '\n' 
-    {
-        printf("Main function call\n");
-        /*  Something like this
-            void main(){
-                commands
-            }
-        */
-    }
-    | MAIN '\n' ENDMAIN '\n'
-     {
-        printf("Main function call\n");
-        /*  Something like this
-            void main(){
-            }
-        */
-    }
+main: args  MAIN  commands  ENDMAIN     { printf("Main function call\n");}
+    | MAIN  commands  ENDMAIN           { printf("Main function call\n");}
+    | MAIN  ENDMAIN                     { printf("Main function call\n");}
     ;
-function: args '\n' METHOD STRING '\n' commands '\n' ENDMETHOD '\n'
-{
-    printf("void method call\n");
-    /*
-        void method_name(args){
-            commands
-        }
-    */
-}
-
-        | TYPE '\n' args '\n' NONVOIDMETHOD STRING '\n' commands '\n' ENDMETHOD '\n'
-        {
-            printf("non void method call\n");
-            /*
-            type string(args){
-                commands
-            }
-            */
-        }
+function: args METHOD STRING commands ENDMETHOD                 { printf("void method call\n"); }
+        | TYPE args NONVOIDMETHOD STRING commands ENDMETHOD     { printf("non void method call\n");}
         ;
 
 // function argumentum handler
@@ -108,55 +68,33 @@ commands    : command commands
             ;
 
 command:     
-             boolexp WHILE '\n' command '\n' ENDWHILE '\n' { 
-                    printf("While\n"); 
-                    /*
-                    How to check boolexp?
-                        while(boolexp){
-                            command
-                        }
-                    */
-                 }
-            | boolexp if  {
-                printf("if\n");
-                /*
-                    How to check boolexp?
-                    if(boolexp){
-                        if_handling
-                    }
-                */
-                }
-            | PRINTF STRING '\n'
-            { 
-                printf("Printf string\n");
-                /*
-                    printf("string value");
-                */ 
-            } 
-            | RETURN ID '\n' {printf("Return id\n"); /*How to return a value here?*/}
-            | RETURN NUMBER '\n' {printf("return number\n"); /*How to return?*/}
-            | calc '\n' 
-            | {printf("Empty\n");} 
+             boolexp WHILE  command ENDWHILE        { printf("While\n"); }
+            | boolexp if                            { printf("if\n"); }
+            | PRINTF STRING                         { printf("Printf string\n");} 
+            | RETURN ID                             { printf("Return id\n"); }
+            | RETURN NUMBER                         { printf("return number\n"); }
+            | calc                                  { printf("calc\n");}
+            |                                       { printf("Empty\n");} 
             ;   
 
-if:         IF '\n' commands '\n' ENDIF '\n' {printf("If command endf\n");}
-            | IF '\n' commands '\n' ELSE '\n' commands '\n' ENDIF '\n' {printf("if command else command endif \n");}
+if:         IF  commands ENDIF                      {printf("If command endf\n");}
+            | IF  commands ELSE  commands ENDIF     {printf("if command else command endif \n");}
 ;
 
 // Boolean expression handling start
-boolexp:      exprs blx exprs {printf("boolexp \n"); }
+boolexp:    exprs blx exprs {printf("boolexp \n"); }
 ;
 
-exprs:    ID {printf("id\n");}
-        | NUMBER {printf("number\n");}
-        | BOOL {printf("bool\n");}
-        | STRING {printf("id string\n"); /*for testing*/}
+exprs:    ID                {printf("id\n");}
+        | NUMBER            {printf("number\n");}
+        | BOOL              {printf("bool\n");}
+        | STRING            {printf("id string\n"); /*for testing*/}
         ;
 
-blx: EQUALTO {printf("equalto\n");}
-    | GREATERTHAN {printf("greaterthan\n");}
-    | OR {printf("or\n");}
-    | AND {printf("and\n");}
+blx: EQUALTO        {printf("equalto\n");}
+    | GREATERTHAN   {printf("greaterthan\n");}
+    | OR            {printf("or\n");}
+    | AND           {printf("and\n");}
 
 // Boolean expression handling finish
 
@@ -166,9 +104,9 @@ calc_exprs:  ID
             | STRING
 ;
 
-calc: calc_exprs '=' exprs {printf("var def\n");}
-    | calc_exprs '=' exprs token exprs'\n' {printf("calculation\n"); }
-    | calc_exprs {printf("var def\n");} '\n'
+calc: calc_exprs '=' exprs              {printf("var def\n");}
+    | calc_exprs '=' exprs token exprs  {printf("calculation\n");}
+    | calc_exprs                        {printf("var def\n");} 
     ;
 
 token: '+'

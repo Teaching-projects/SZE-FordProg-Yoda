@@ -15,7 +15,7 @@ CHARACTERTOKENS [(\)]
 %% 
 
 exit                                    {return '\0';}
-\n                                      {return '\n';}
+\n                                      {/*return '\n';*/}
 SIZE_MATTERS_NOT                        {return '+';}
 RUSH_NOT_INTO_FIGHTS                    {return '-';}
 DIFFICULT_TO_SEE                        {return '*';}
