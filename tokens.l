@@ -41,11 +41,11 @@ BEGUN_THE_CLONE_WAR_HAS                 {return NONVOIDMETHOD;}
 I_SENSE_MUCH_FEAR_IN_YOU                {return ARGS;}
 NO_MORE_TRAINING_YOU_REQUIRE            {return ENDMETHOD;}
 SHOULD_I_CALL_YOU_DARTH_SIDIOUS         {return CALLMETHOD;}
-("INT"|"STRING"|"FLOAT")                {/*strcpy(yylval.strval, yytext);*/ return TYPE;}
+("INT"|"STRING"|"FLOAT")                {/*strcpy(yylval.strval, yytext);*/ return TYPE; printf("Type..\n");}
 include                                 {return INCLUDE;}
 [1-9]{DIGITS}*                          {return NUMBER;}
+[a-zA-Z0-9]*                            {return STRING; }
 {ALPHABET}({ALPHABET}|{DIGITS})*        {return ID;}
 {CHARACTERTOKENS}                       {return *yytext;}
-[a-zA-Z0-9]*                            {return STRING; }
 [ \t]*                                   { /* ignore whitespace */ }
           

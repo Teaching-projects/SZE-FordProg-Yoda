@@ -26,35 +26,57 @@ int intval;
 %token GREATERTHAN 
 %token ID 
 %token STRING 
-%token NUMBER 
 %token BOOL
 %token MAIN ENDMAIN METHOD NONVOIDMETHOD ARGS ENDMETHOD CALLMETHOD  INCLUDE
-%token <strval>TYPE <strval>NUMBER
+//%right IF ELSE ?? 
+
+%token TYPE <strval>NUMBER
 
 %%
 
 // main token handler
-s: main 
-    | function s
-    | exprs s
+s:  main 
+    //| function 
+    //| exprs 
     | include s
-    | /*empty*/
+    | /*empty */
     ;
 
 // Include handling
-include: INCLUDE '\n' STRING {printf("include\n"); /*#include "string"*/}
+include: INCLUDE STRING '\n' {printf("include\n");}
+        | INCLUDE ID '\n' {printf("include\n"); /*for testing*/}
+        ; 
 
 // Method handling
-main: args '\n' MAIN '\n' commands '\n' ENDMAIN {printf("Main function call\n");
-/*  Something like this
-    void main(args){
-        commands
+main: //args '\n' MAIN '\n' commands '\n' ENDMAIN '\n' 
+    //{
+      //  printf("Main function call\n");
+        /*  Something like this
+            void main(args){
+                commands
+            }
+        */
+    //}
+    /*|*/ MAIN '\n' commands '\n' ENDMAIN '\n' 
+    {
+        printf("Main function call\n");
+        /*  Something like this
+            void main(){
+                commands
+            }
+        */
     }
-
-*/
-}
+    | MAIN '\n' ENDMAIN '\n'
+     {
+        printf("Main function call\n");
+        /*  Something like this
+            void main(){
+                commands
+            }
+        */
+    }
     ;
-function: args '\n' METHOD STRING '\n' commands '\n' ENDMETHOD
+function: args '\n' METHOD STRING '\n' commands '\n' ENDMETHOD '\n'
 {
     printf("void method call\n");
     /*
@@ -64,7 +86,7 @@ function: args '\n' METHOD STRING '\n' commands '\n' ENDMETHOD
     */
 }
 
-        | TYPE '\n' args '\n' NONVOIDMETHOD STRING '\n' commands '\n' ENDMETHOD
+        | TYPE '\n' args '\n' NONVOIDMETHOD STRING '\n' commands '\n' ENDMETHOD '\n'
         {
             printf("non void method call\n");
             /*
@@ -76,17 +98,19 @@ function: args '\n' METHOD STRING '\n' commands '\n' ENDMETHOD
         ;
 
 // function argumentum handler
-args: TYPE STRING',' args   {printf("type string, \n");}
-    | TYPE STRING           {printf("type string\n");}
+args: TYPE STRING',' args '\n'   {printf("type string, \n");}
+    | TYPE STRING '\n'          {printf("type string \n");}
+    | /*can be empty*/         
     ;
 // Method handling end
 
 // Common command handling
 commands    : command commands
+            | /*empty*/
             ;
 
 command:     
-             boolexp '\n'  WHILE '\n' command '\n' ENDWHILE { 
+             boolexp '\n'  WHILE '\n' command '\n' ENDWHILE '\n' { 
                     printf("While\n"); 
                     /*
                     How to check boolexp?
@@ -104,21 +128,21 @@ command:
                     }
                 */
                 }
-            | PRINTF STRING 
+            | PRINTF STRING '\n'
             { 
                 printf("Printf string\n");
                 /*
                     printf("string value");
                 */ 
             } 
-            | RETURN ID {printf("Return id\n"); /*How to return a value here?*/}
-            | RETURN NUMBER {printf("return number\n"); /*How to return?*/}
+            | RETURN ID '\n' {printf("Return id\n"); /*How to return a value here?*/}
+            | RETURN NUMBER '\n' {printf("return number\n"); /*How to return?*/}
             | exprs 
             | {printf("Empty\n");} 
             ;   
 
-if:         IF '\n' command '\n' ENDIF {printf("If command endf\n");}
-            | IF '\n' command '\n' ELSE '\n' command '\n' ENDIF {printf("if command else command endif \n");}
+if:         IF '\n' command '\n' ENDIF '\n' {printf("If command endf\n");}
+            | IF '\n' command '\n' ELSE '\n' command '\n' ENDIF '\n' {printf("if command else command endif \n");}
 ;
 
 // Boolean expression handling start
@@ -128,18 +152,24 @@ boolexp:      exprs blx exprs {printf(" boolexp \n"); }
 exprs:    ID {printf("id\n");}
         | NUMBER {printf("number\n");}
         | BOOL {printf("bool\n");}
+        | STRING {printf("it is id as well"); /*for testing*/}
         ;
 
-blx: EQUALTO {printf("equalto\n");}
-    | GREATERTHAN {printf("greaterthan\n");}
-    | OR {printf("or\n");}
-    | AND {printf("and\n");}
+blx: EQUALTO '\n' {printf("equalto\n");}
+    | GREATERTHAN '\n' {printf("greaterthan\n");}
+    | OR '\n' {printf("or\n");}
+    | AND '\n' {printf("and\n");}
 
 // Boolean expression handling finish
 
 // Calculation grammar.
-calc: exprs token calc {printf("calculation"); /*No idea how to solve this yet*/}
-    | exprs
+calc_exprs:  ID
+            | BOOL
+            | STRING
+;
+
+calc: exprs token calc '\n' {printf("calculation"); /*No idea how to solve this yet*/}
+    | exprs '\n'
     ;
 
 token: '+'

@@ -62,14 +62,33 @@ extern int yydebug;
     GREATERTHAN = 268,
     ID = 269,
     STRING = 270,
-    NUMBER = 271,
-    BOOL = 272
+    BOOL = 271,
+    MAIN = 272,
+    ENDMAIN = 273,
+    METHOD = 274,
+    NONVOIDMETHOD = 275,
+    ARGS = 276,
+    ENDMETHOD = 277,
+    CALLMETHOD = 278,
+    INCLUDE = 279,
+    TYPE = 280,
+    NUMBER = 281
   };
 #endif
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-typedef int YYSTYPE;
+union YYSTYPE
+{
+#line 11 "grammar.y"
+
+char strval[2048];
+int intval;
+
+#line 89 "grammar.tab.h"
+
+};
+typedef union YYSTYPE YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
 #endif
